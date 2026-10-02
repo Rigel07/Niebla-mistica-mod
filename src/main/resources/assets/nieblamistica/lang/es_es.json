@@ -1,0 +1,11 @@
+{
+  "commands.nieblamistica.start": "La Niebla Mística ha comenzado.",
+  "commands.nieblamistica.stop": "La Niebla Mística ha desaparecido.",
+  "commands.nieblamistica.already_active": "La Niebla Mística ya está activa.",
+  "commands.nieblamistica.not_active": "La Niebla Mística no está activa.",
+  "commands.nieblamistica.status.active": "La Niebla Mística está activa durante %s segundos más.",
+  "commands.nieblamistica.status.inactive": "La Niebla Mística está inactiva.",
+  "nieblamistica.warning": "El aire se vuelve repentinamente frío...",
+  "nieblamistica.begin": "NIEBLA MÍSTICA",
+  "nieblamistica.end": "La niebla se ha disipado."
+}
