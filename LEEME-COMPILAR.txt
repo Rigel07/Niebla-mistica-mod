@@ -1,0 +1,27 @@
+NIEBLA MISTICA 1.2.0 - COMO COMPILARLA CON GITHUB (sin instalar nada)
+
+QUE ESTABA MAL EN LA VERSION DE CHATGPT (ya corregido)
+ - build.gradle pedia el plugin "parchmentmc" sin tener su repositorio -> el build fallaba nada mas empezar.
+ - Importaba clases que no existen en 1.20.1 (DataStorage y network.SimpleChannel) -> no compilaba.
+ - La duracion estaba en 60-180 MINUTOS en vez de 1-3 minutos.
+ - La capa oscura se dibujaba ~15 veces por fotograma (pantalla casi negra) y la niebla se veia tambien en el Nether/End.
+ - Los comandos se registraban tarde (al arrancar el servidor) en vez de con el evento correcto.
+ - Los archivos venian sueltos, sin sus carpetas.
+
+SUBIRLO A GITHUB
+ 1. Descomprime este zip.
+ 2. En tu repositorio: Add file -> Upload files, y arrastra TODO el contenido de la carpeta descomprimida
+    (src, .github, build.gradle, gradle.properties, settings.gradle, README.md, LICENSE, .gitignore...).
+    Si ya tenias archivos sueltos de ChatGPT, borralos antes o se mezclaran.
+ 3. Commit changes.
+ 4. Pestana Actions: espera a que el Build salga en verde (3-5 min). Si no arranca, entra en "Build" -> Run workflow.
+ 5. Descarga el artefacto "niebla-mistica": dentro esta nieblamistica-1.2.0.jar.
+
+SI NO SE VE LA CARPETA ".github" EN GITHUB (a veces no se sube al arrastrar):
+ Add file -> Create new file, en el nombre escribe  .github/workflows/build.yml
+ y pega el contenido del archivo build.yml de tu carpeta descomprimida (abrelo con el Bloc de notas). Commit.
+
+EN MINECRAFT (Forge 1.20.1)
+ - Pon el jar en la carpeta mods. Para probar: /mistica start   (necesitas ser OP / trampas activadas).
+
+SI EL BUILD SALE EN ROJO: abre el Build fallido en Actions, copia las lineas que empiezan por "error:" y pasamelas.

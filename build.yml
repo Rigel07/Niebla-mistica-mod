@@ -1,0 +1,57 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar que el codigo esta en el repositorio
+        run: |
+          echo "Archivos en la raiz:"; ls -la
+          test -f build.gradle || { echo "ERROR: no hay build.gradle en la raiz del repositorio"; exit 1; }
+          test -d src/main/java || { echo "ERROR: falta la carpeta src/main/java (suelta el contenido con sus carpetas)"; exit 1; }
+          echo "Archivos .java encontrados: $(find src/main/java -name '*.java' | wc -l)"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.1.1
+
+      - name: Compilar el mod
+        run: gradle build --no-daemon --stacktrace
+
+      - name: Verificar que el .jar tiene el mod dentro
+        run: |
+          ls -la build/libs
+          JAR=$(ls build/libs/*.jar | grep -v -- '-sources' | head -n 1)
+          echo "Revisando $JAR"
+          unzip -l "$JAR" | grep -q 'META-INF/mods.toml' || { echo "ERROR: el jar no contiene mods.toml"; exit 1; }
+          unzip -l "$JAR" | grep -q 'com/nieblamistica/NieblaMistica.class' || { echo "ERROR: el jar no contiene clases compiladas"; exit 1; }
+          echo "OK: el jar contiene el mod"
+
+      - name: Subir el .jar como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: niebla-mistica
+          path: build/libs/*.jar
+
+      - name: Publicar release (solo con tags v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/libs/*.jar
